@@ -10,8 +10,19 @@ input_filename = ARGV[0]
 output_filename = (input_filename =~ /^((.+)\.tex)rb$/ and $1)
 
 File.open(input_filename, 'r') do |f|
-	@input_text = f.readlines.join
+	@input_text_lines = f.readlines
 end
+
+@input_text_lines.each_with_index do |ln,i|
+	if ln.rstrip =~ /^\\input\{(.+)\}$/
+		sub_fn = $1 + '.texrb'
+		raise if not File.exist?(sub_fn)
+
+		@input_text_lines[i] = File.open(sub_fn, 'r').readlines
+	end
+end
+
+@input_text = @input_text_lines.flatten.join
 
 erb = ERB.new(@input_text, 0, '')
 
