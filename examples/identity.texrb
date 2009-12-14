@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+<% N = 10 %>
+This is an identity matrix $<%= N %> \times <%= N %>$:
+$$
+\begin{pmatrix}
+<%=
+(1..N).map {|x|
+	(1..N).map {|y| x == y ? 1 : 0}.join('&')
+}.join("\\\\\n")
+%>
+\end{pmatrix}
+$$
+\end{document}
