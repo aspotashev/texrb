@@ -1,9 +1,14 @@
+% N x N identity matrix example
+%
+% See also http://mathematics.nsetzer.com/latex/latex_for_loop.html
+% for a pure TeX solution
+
 \documentclass{article}
 \usepackage{amsmath}
 
 \begin{document}
 <% N = 10 %>
-This is an identity matrix $<%= N %> \times <%= N %>$:
+This is a $<%= N %> \times <%= N %>$ identity matrix:
 $$
 \begin{pmatrix}
 <%=
