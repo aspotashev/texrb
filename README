@@ -1,0 +1,5 @@
+Sample usage:
+	render-texrb sample.texrb
+	latex sample.tex
+
+For .texrb examples see examples/*
