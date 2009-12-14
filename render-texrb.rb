@@ -13,9 +13,7 @@ raise "The command-line argument must be " +
 	"a filename ending with .texrb" if output_filename.nil?
 
 begin
-	File.open(input_filename, 'r') do |f|
-		@input_text_lines = f.readlines
-	end
+	@input_text_lines = File.open(input_filename, 'r').readlines
 rescue Errno::ENOENT => e
 	puts e.message
 	exit
@@ -31,14 +29,9 @@ end
 	end
 end
 
-@input_text = @input_text_lines.flatten.join
+result = ERB.new(@input_text_lines.flatten.join, 0, '').result
 
-erb = ERB.new(@input_text, 0, '')
+raise "Output file already exists: " +
+	"#{output_filename}" if File.exist?(output_filename)
+File.open(output_filename, 'w').puts(result)
 
-if File.exist?(output_filename)
-	raise "Output file already exists: #{output_filename}"
-end
-
-File.open(output_filename, 'w') do |f|
-	f.puts(erb.result)
-end
