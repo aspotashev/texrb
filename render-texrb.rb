@@ -5,18 +5,27 @@
 require 'erb'
 
 
-raise if not ARGV.size == 1
+raise "Expected exactly one command-line argument" if not ARGV.size == 1
 input_filename = ARGV[0]
 output_filename = (input_filename =~ /^((.+)\.tex)rb$/ and $1)
 
-File.open(input_filename, 'r') do |f|
-	@input_text_lines = f.readlines
+raise "The command-line argument must be " +
+	"a filename ending with .texrb" if output_filename.nil?
+
+begin
+	File.open(input_filename, 'r') do |f|
+		@input_text_lines = f.readlines
+	end
+rescue Errno::ENOENT => e
+	puts e.message
+	exit
 end
 
 @input_text_lines.each_with_index do |ln,i|
 	if ln.rstrip =~ /^\\input\{(.+)\}$/
 		sub_fn = $1 + '.texrb'
-		raise if not File.exist?(sub_fn)
+		raise "File specified in \\input{...} doesn't exist " +
+			"(#{sub_fn})" if not File.exist?(sub_fn)
 
 		@input_text_lines[i] = File.open(sub_fn, 'r').readlines
 	end
