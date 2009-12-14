@@ -1,0 +1,13 @@
+--- eruby.vim.orig	2009-12-14 17:36:25.000000000 +0300
++++ eruby.vim	2009-12-14 19:21:28.000000000 +0300
+@@ -55,7 +55,9 @@
+ 
+ syn cluster erubyRegions contains=erubyOneLiner,erubyBlock,erubyExpression,erubyComment
+ 
+-exe 'syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%\{1,'.b:eruby_nest_level.'\}%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline'
++if b:eruby_subtype != 'tex'
++  exe 'syn region  erubyOneLiner   matchgroup=erubyDelimiter start="^%\{1,'.b:eruby_nest_level.'\}%\@!"    end="$"     contains=@rubyTop	     containedin=ALLBUT,@erubyRegions keepend oneline'
++endif
+ exe 'syn region  erubyBlock      matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}%\@!-\=" end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erubyRegions keepend'
+ exe 'syn region  erubyExpression matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}="       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=@rubyTop        containedin=ALLBUT,@erubyRegions keepend'
+ exe 'syn region  erubyComment    matchgroup=erubyDelimiter start="<%\{1,'.b:eruby_nest_level.'\}#"       end="-\=%\@<!%\{1,'.b:eruby_nest_level.'\}>" contains=rubyTodo,@Spell containedin=ALLBUT,@erubyRegions keepend'
